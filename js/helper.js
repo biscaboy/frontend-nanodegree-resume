@@ -57,6 +57,8 @@ var HTMLonlineURL = '<br><a href="#">%data%</a>';
 
 var internationalizeButton = '<button>Internationalize</button>';
 var googleMap = '<div id="map"></div>';
+var googleMapHeader = '<div id="content"></div><h1 id="mapFirstHeading" class="mapFirstHeading">%data%</h1>';
+var googleMapContent = '<div id="mapBodyContent"><p>%data%</p></div>';
 
 
 /*
@@ -85,7 +87,9 @@ function logClicks(x,y) {
 }
 
 $(document).click(function(loc) {
-  // your code goes here!
+  var x = loc.pageX;
+  var y = loc.pageY;
+  logClicks(x,y);
 });
 
 
@@ -161,16 +165,29 @@ function initializeMap() {
       title: name
     });
 
-    // infoWindows are the little helper windows that open when you click
+    var contentString = googleMapHeader.replace('%data%', name) + 
+    					googleMapContent.replace('%data%', name);
+
+      // infoWindows are the little helper windows that open when you click
     // or hover over a pin on a map. They usually contain more information
     // about a location.
     var infoWindow = new google.maps.InfoWindow({
-      content: name
+      content: contentString
     });
 
-    // hmmmm, I wonder what this is about...
+    // display info window about the selected location
+    google.maps.event.addListener(marker, 'mouseover', function() {
+    	infoWindow.open(map, marker);
+    });
+
+    // display info window about the selected location
+    google.maps.event.addListener(marker, 'mouseout', function() {
+    	infoWindow.close();
+    });
+
+    // display info window about the selected location
     google.maps.event.addListener(marker, 'click', function() {
-      // your code goes here!
+    	infoWindow.open(map, marker);
     });
 
     // this is where the pin actually gets added to the map.
@@ -227,17 +244,46 @@ function initializeMap() {
   pinPoster(locations);
 
 }
+/* I don't think this is being used 
+	function locationizer(work_obj) {
 
+	  var locations = [];
+
+	  for (job in work_obj.jobs) {
+	    locations.push(work_obj.jobs[job].location);
+	  }
+	  return locations;
+	}
+*/
+
+function inName(name) {
+  var myElem = $("h1").get(0);
+  var myName = myElem.innerHTML
+  var nameArray = myName.split(' ');
+
+  var myInName = nameArray[0].slice(0,1).toUpperCase();
+  myInName += nameArray[0].slice(1).toLowerCase();
+
+  for (i = 1; i < nameArray.length; i++){
+    if (i === nameArray.length - 1 ) {
+      myInName += " " + nameArray[i].toUpperCase();
+    } else {
+      myInName += " " + nameArray[i]; 
+    }
+  } 
+
+  return myInName;
+}
 /*
 Uncomment the code below when you're ready to implement a Google Map!
 */
 
 // Calls the initializeMap() function when the page loads
-//window.addEventListener('load', initializeMap);
+window.addEventListener('load', initializeMap);
 
 // Vanilla JS way to listen for resizing of the window
 // and adjust map bounds
-//window.addEventListener('resize', function(e) {
+window.addEventListener('resize', function(e) {
   // Make sure the map bounds get updated on page resize
-//  map.fitBounds(mapBounds);
-//});
+  map.fitBounds(mapBounds);
+});
