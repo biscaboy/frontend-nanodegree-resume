@@ -10,16 +10,24 @@ var bio = {
 		"blogURL"  : "http://www.davidjdickinson.com/category/news/",
 		"location" : "Scottsdale, AZ"
 	},
-	"picURL"   : "images/fry.jpg",
+	"picURL"   : "images/headshot.png",
 	"welcome"  : "Coding Solutions for Your Web Ideas",
-	"skills"   : ["Fun loving", 
-				  "Great collaborator", 
+	"skills"   : ["Photoshop", 
 				  "HTML", 
 				  "Javascript", 
 				  "JQuery", 
 				  "SQL", 
 				  "Java"]
 };
+
+bio.display = function() {
+// add list of skills
+if (bio.skills.length > 0) {
+	$("#header").append(HTMLskillsStart);
+	for (skill in bio.skills){
+		$("#skills").prepend(HTMLskills.replace("%data%", bio.skills[skill]));
+	}
+}
 
 var work = {
 	"jobs" : [
@@ -28,7 +36,7 @@ var work = {
 			"employer" : "Contract",
 			"location": "Scottsdale, AZ",
 			"dates" : "2005 - 2015",
-			"description" :  "Customized application software and improved application performance for AppointmentJournal.com (PHP/MySQL/UNIX scripting). Developed AppointmentJournal.com marketing website. Developed and maintained client websites."
+			"description" :  "Website design, development for custom websites and WordPress template customization for clients. Customized application software and improved application performance for AppointmentJournal.com (PHP/MySQL/UNIX scripting). Developed AppointmentJournal.com marketing website. Developed and maintained client websites."
 		},
 		{
 			"title" : "Consultant",
@@ -61,6 +69,23 @@ var work = {
 	]
 
 };
+
+work.display = function () {
+		if (work.jobs.length > 0){
+			
+			for (job in work.jobs){
+				var formattedEmployer = HTMLworkEmployer.replace("%data%", work.jobs[job].employer);
+				var formattedTitle = HTMLworkTitle.replace("%data%", work.jobs[job].title);
+				var formattedJobDates = HTMLworkDates.replace("%data%", work.jobs[job].dates);
+				var formattedJobDescription = HTMLworkDescription.replace("%data%", work.jobs[job].description);
+				var formattedJob = formattedEmployer + formattedTitle + formattedJobDates + formattedJobDescription;
+				$("#workExperience").append(HTMLworkStart);
+				$(".work-entry:last").append(formattedJob);
+
+			}
+		}
+	}
+}
 
 var education = {
 	"schools" : [
@@ -143,32 +168,6 @@ projects.display = function (){
 	}
 }
 
-bio.display = function() {
-// add list of skills
-if (bio.skills.length > 0) {
-	$("#header").append(HTMLskillsStart);
-	for (skill in bio.skills){
-		$("#skills").prepend(HTMLskills.replace("%data%", bio.skills[skill]));
-	}
-}
-
-work.display = function () {
-		if (work.jobs.length > 0){
-			
-			for (job in work.jobs){
-				var formattedEmployer = HTMLworkEmployer.replace("%data%", work.jobs[job].employer);
-				var formattedTitle = HTMLworkTitle.replace("%data%", work.jobs[job].title);
-				var formattedJobDates = HTMLworkDates.replace("%data%", work.jobs[job].dates);
-				var formattedJobDescription = HTMLworkDescription.replace("%data%", work.jobs[job].description);
-				var formattedJob = formattedEmployer + formattedTitle + formattedJobDates + formattedJobDescription;
-				$("#workExperience").append(HTMLworkStart);
-				$(".work-entry:last").append(formattedJob);
-
-			}
-		}
-	}
-}
-
 // Create formatted page
 var formattedName    = HTMLheaderName.replace("%data%", bio.name);
 var formattedRole    = HTMLheaderRole.replace("%data%", bio.role);
@@ -183,13 +182,21 @@ var formattedWelcome = HTMLwelcomeMsg.replace("%data%", bio.welcome);
 var formattedLocation = HTMLlocation.replace("%data%", bio.contacts.location);
 
 // insert header section
-$("#header").prepend(formattedRole);
-$("#header").prepend(formattedName);
-// add contact information
-$("#topContacts").append(formattedMoblie + formattedEmail + formattedTwitter + formattedGithub + formattedLocation);
+$("#title").prepend(formattedRole);
+$("#title").prepend(formattedName);
+$("#titleHeader").prepend(formattedPic);
+$("#topContactsList").append(
+	formattedLocation);
+$("#topContactsListLinks").append(
+	formattedMoblie + 
+	formattedEmail + 
+	formattedTwitter + 
+	formattedGithub + 
+	formattedBlog); 
+
 // add welcome phrase and picture
 $("#header").append(formattedWelcome);
-$("#header").append(formattedPic);
+
 
 bio.display()
 work.display();
