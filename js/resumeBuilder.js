@@ -1,33 +1,72 @@
 var bio = {
 	"name"     : "David J. Dickinson",
-	"role"     : "Web Developer",
+	"role"     : "Developer - Analyst - Artist",
 	"contacts" : {
 		"mobile"   : "480-600-2619",
 		"email"    : "djdlearn@gmail.com",
-		"twitter"  : "@davidjdickinson",
 		"github"   : "biscaboy",
-		"blogName" : "Musings...",
-		"blogURL"  : "http://www.davidjdickinson.com/category/news/",
+		"twitter"  : "@davidjdickinson",
 		"location" : "Scottsdale, AZ"
 	},
-	"picURL"   : "images/headshot.png",
-	"welcome"  : "Coding Solutions for Your Web Ideas",
+	"welcomeMessage"  : "Always learning, always growing!",
 	"skills"   : ["Photoshop", 
 				  "HTML", 
 				  "Javascript", 
 				  "JQuery", 
 				  "SQL", 
-				  "Java"]
+				  "Java"],
+	"biopic"   : "images/headshot.png",
 };
 
+/* modifyHeader - adds html before the header, moves #topContacts
+ * In an effort not to modify index.html for the assignment I added this method 
+ * to insert html to display a custom header. 
+ */
+bio.modifyHeader = function () {
+	$("#topContacts").remove();
+	$(HTMLdavidHeader).insertBefore("#header");
+	$("#header").toggleClass("center-content");
+};
+
+/* bio.display - display bio JSON data 
+ * Displays info about me into the header section adds custom header.
+ */
 bio.display = function() {
-// add list of skills
-if (bio.skills.length > 0) {
-	$("#header").append(HTMLskillsStart);
-	for (skill in bio.skills){
-		$("#skills").prepend(HTMLskills.replace("%data%", bio.skills[skill]));
+	// add html before the header for a custom look 
+	this.modifyHeader();
+
+	// add list of skills to the header.
+	if (bio.skills.length > 0) {
+		$("#header").append(HTMLskillsStart);
+		for (skill in bio.skills){
+			$("#skills").prepend(HTMLskills.replace("%data%", bio.skills[skill]));
+		}
 	}
-}
+	
+	// format bio elements for display
+	var formattedName    = HTMLheaderName.replace("%data%", bio.name);
+	var formattedRole    = HTMLheaderRole.replace("%data%", bio.role);
+	var formattedMoblie  = HTMLmobile.replace("%data%", bio.contacts.mobile);
+	var formattedEmail   = HTMLemail.replace("%data%", bio.contacts.email);
+	var formattedTwitter = HTMLtwitter.replace("%data%", bio.contacts.twitter);
+	var formattedGithub  = HTMLgithub.replace("%data%", bio.contacts.github);
+	var formattedPic     = HTMLbioPic.replace("%data%", bio.biopic);
+	var formattedWelcome = HTMLwelcomeMsg.replace("%data%", bio.welcomeMessage);
+	var formattedLocation = HTMLlocation.replace("%data%", bio.contacts.location);
+
+	// insert bio elements into the header section
+	$("#topTitle").prepend(formattedName + formattedRole);
+	$("#topHeader").prepend(formattedPic);
+	$("#topContactsList").append(formattedLocation);
+	$("#topContactsListLinks").append(
+		formattedMoblie + 
+		formattedEmail + 
+		formattedTwitter + 
+		formattedGithub);
+
+	// insert the welcome message into the header
+	$("#header").prepend(formattedWelcome);
+};
 
 var work = {
 	"jobs" : [
@@ -36,7 +75,7 @@ var work = {
 			"employer" : "Contract",
 			"location": "Scottsdale, AZ",
 			"dates" : "2005 - 2015",
-			"description" :  "Website design, development for custom websites and WordPress template customization for clients. Customized application software and improved application performance for AppointmentJournal.com (PHP/MySQL/UNIX scripting). Developed AppointmentJournal.com marketing website. Developed and maintained client websites."
+			"description" :  "Website design, website development, WordPress template customization, site administration. Customized application software and improved application performance for AppointmentJournal.com (PHP/MySQL/UNIX scripting). Developed AppointmentJournal.com marketing website. Developed and maintained client websites."
 		},
 		{
 			"title" : "Consultant",
@@ -71,21 +110,20 @@ var work = {
 };
 
 work.display = function () {
-		if (work.jobs.length > 0){
-			
-			for (job in work.jobs){
-				var formattedEmployer = HTMLworkEmployer.replace("%data%", work.jobs[job].employer);
-				var formattedTitle = HTMLworkTitle.replace("%data%", work.jobs[job].title);
-				var formattedJobDates = HTMLworkDates.replace("%data%", work.jobs[job].dates);
-				var formattedJobDescription = HTMLworkDescription.replace("%data%", work.jobs[job].description);
-				var formattedJob = formattedEmployer + formattedTitle + formattedJobDates + formattedJobDescription;
-				$("#workExperience").append(HTMLworkStart);
-				$(".work-entry:last").append(formattedJob);
+	if (work.jobs.length > 0){
+		
+		for (job in work.jobs){
+			var formattedEmployer = HTMLworkEmployer.replace("%data%", work.jobs[job].employer);
+			var formattedTitle = HTMLworkTitle.replace("%data%", work.jobs[job].title);
+			var formattedJobDates = HTMLworkDates.replace("%data%", work.jobs[job].dates);
+			var formattedJobDescription = HTMLworkDescription.replace("%data%", work.jobs[job].description);
+			var formattedJob = formattedEmployer + formattedTitle + formattedJobDates + formattedJobDescription;
+			$("#workExperience").append(HTMLworkStart);
+			$(".work-entry:last").append(formattedJob);
 
-			}
 		}
 	}
-}
+};
 
 var education = {
 	"schools" : [
@@ -130,6 +168,43 @@ var education = {
 	]
 };
 
+education.display = function() {
+	if (education.schools.length > 0){
+		
+		for (s in education.schools) {
+			var formattedName = HTMLschoolName.replace("%data%", education.schools[s].name);
+			var formattedDegree = HTMLschoolDegree.replace("%data%", education.schools[s].degree);
+			var formattedMajor = HTMLschoolMajor.replace("%data%", education.schools[s].major);
+			var formattedDates = HTMLschoolDates.replace("%data%", education.schools[s].dates);
+			var formattedURL = HTMLschoolLocation.replace("%data%", education.schools[s].url);
+			var formattedSchool = formattedName +
+								  formattedDegree +
+								  formattedMajor + 
+								  formattedDates +
+								  formattedURL;
+			$("#education").append(HTMLschoolStart);
+			$(".education-entry:last").append(formattedSchool);
+		}
+	}
+
+	if (education.onlineCourses.length > 0){
+			var onlineClassesFormattedHTML = HTMLonlineClasses;
+			for (oc in education.onlineCourses) {
+				var formattedTitle = HTMLonlineTitle.replace("%data%", education.onlineCourses[oc].title);
+				var formattedSchool = HTMLonlineSchool.replace("%data%", education.onlineCourses[oc].school);
+				var formattedDates = HTMLonlineDates.replace("%data%", education.onlineCourses[oc].dates);
+				var formattedURL = HTMLonlineURL.replace("%data%", education.onlineCourses[oc].url);
+				var formattedSchool = formattedTitle +
+									  formattedSchool +
+									  formattedDates +
+									  formattedURL;
+				
+				onlineClassesFormattedHTML += formattedSchool;
+			}
+			$(".education-entry:last").append(onlineClassesFormattedHTML);
+		}
+};
+
 var projects = {
 	"project" : [
 		{
@@ -145,7 +220,7 @@ var projects = {
 			"images" : []
 		}
 	]
-} 
+};
 
 projects.display = function (){
 	if (projects.project.length > 0){
@@ -166,42 +241,18 @@ projects.display = function (){
 			}
 		}
 	}
+};
+
+/* display JSON data inserting it into index.html appending a map*/
+function displayJSONwithMap() {
+	bio.display();
+	work.display();
+	projects.display();
+	education.display();
+	$("#mapDiv").append(googleMap);
 }
 
-// Create formatted page
-var formattedName    = HTMLheaderName.replace("%data%", bio.name);
-var formattedRole    = HTMLheaderRole.replace("%data%", bio.role);
-var formattedMoblie  = HTMLmobile.replace("%data%", bio.contacts.mobile);
-var formattedEmail   = HTMLemail.replace("%data%", bio.contacts.email);
-var formattedTwitter = HTMLtwitter.replace("%data%", bio.contacts.twitter);
-var formattedGithub  = HTMLgithub.replace("%data%", bio.contacts.github);
-var formattedBlog    = HTMLblog.replace("%data%", bio.contacts.blogURL)
-//var formattedBlog    = formattedBlog.replace("%data%", bio.blogName);
-var formattedPic     = HTMLbioPic.replace("%data%", bio.picURL);
-var formattedWelcome = HTMLwelcomeMsg.replace("%data%", bio.welcome);
-var formattedLocation = HTMLlocation.replace("%data%", bio.contacts.location);
+$(displayJSONwithMap());
 
-// insert header section
-$("#title").prepend(formattedRole);
-$("#title").prepend(formattedName);
-$("#titleHeader").prepend(formattedPic);
-$("#topContactsList").append(
-	formattedLocation);
-$("#topContactsListLinks").append(
-	formattedMoblie + 
-	formattedEmail + 
-	formattedTwitter + 
-	formattedGithub + 
-	formattedBlog); 
-
-// add welcome phrase and picture
-$("#header").append(formattedWelcome);
-
-
-bio.display()
-work.display();
-projects.display();
-
-$("#mapDiv").append(googleMap);
 
 

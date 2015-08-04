@@ -1,8 +1,11 @@
 /*
 
-This file contains all of the code running in the background that makes resumeBuilder.js possible. We call these helper functions because they support your code in this course.
+This file contains all of the code running in the background that makes resumeBuilder.js possible. 
+We call these helper functions because they support your code in this course.
 
-Don't worry, you'll learn what's going on in this file throughout the course. You won't need to make any changes to it until you start experimenting with inserting a Google Map in Problem Set 3.
+Don't worry, you'll learn what's going on in this file throughout the course. 
+You won't need to make any changes to it until you start experimenting with 
+inserting a Google Map in Problem Set 3.
 
 Cameron Pittman
 */
@@ -43,7 +46,7 @@ var HTMLprojectImage = '<img src="%data%">';
 
 var HTMLschoolStart = '<div class="education-entry"></div>';
 var HTMLschoolName = '<a href="#">%data%';
-var HTMLschoolDegree = ' -- %data%</a>';
+var HTMLschoolDegree = ' - %data%</a>';
 var HTMLschoolDates = '<div class="date-text">%data%</div>';
 var HTMLschoolLocation = '<div class="location-text">%data%</div>';
 var HTMLschoolMajor = '<em><br>Major: %data%</em>';
@@ -59,6 +62,16 @@ var googleMap = '<div id="map"></div>';
 var googleMapHeader = '<div id="content"></div><h1 id="mapFirstHeading" class="mapFirstHeading">%data%</h1>';
 var googleMapContent = '<div id="mapBodyContent"><p>%data%</p></div>';
 
+/* Added this bit of HTML to prepend to the header for a custom look */
+var HTMLdavidHeader = ' <div id="topHeader"> \
+      <div id="topContent"> \
+        <div id="topTitle"></div> \
+        <div id="topContacts"> \
+          <ul id="topContactsList" ></ul> \
+          <ul id="topContactsListLinks"></ul> \
+        </div> \
+      </div> \
+    </div>';
 
 /*
 The International Name challenge in Lesson 2 where you'll create a function that will need this helper code to run. Don't delete! It hooks up your code to the button you'll be appending.
