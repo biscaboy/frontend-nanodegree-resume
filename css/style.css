@@ -49,9 +49,10 @@ h2, h3, h4, h5 {
 }
 
 h1.mapFirstHeading {
-  font-size: 10px;
+  font-size: 1.25em;
   padding: 0 0 0 0;
   margin: 0 0 0 0;
+  color: #000;
 }
 
 p {
@@ -91,12 +92,60 @@ span {
 }
 
 #projects h2 { 
-  color: #F5AE23;
+  color: #f5ae23;
 }
 
-.education-entry, .work-entry, .project-entry {
+.education-entry, 
+.work-entry, 
+.project-entry {
   padding-left: 5%;
   padding-right: 5%;
+}
+
+.education-entry {
+  padding-bottom: 2%;
+  overflow: auto;
+}
+
+.education-entry-details,
+.education-entry .date-text,
+.education-entry em {
+  margin: 0 1% 0 1%;
+  display: inline;
+}
+
+#school,
+.education-entry a {
+  background-color: #ccc;
+  width: 100%;
+  margin-bottom: 1%;
+  padding: 0 1% 0 .25%;
+}
+
+.education-entry a, 
+.education-entry .location-text {
+  color: #fff;
+  display: inline;
+}
+
+.education-entry .location-text {
+  color: #fff;
+}
+
+.project-entry img {
+  border: 2px #fff solid;
+  padding: 0;
+  margin: .5em 2em 2em 0;
+  width: 15em;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  box-shadow: 10px 10px 5px #666666;
+  -moz-transition: width .25s ease-in-out;
+  -webkit-transition: width .25s ease-in-out;
+  -moz-transition: width .25s ease-in-out;
+  -o-transition: width .25s ease-in-out;
+  transition: width .25s ease-in-out;
 }
 
 #topHeader {
@@ -117,9 +166,9 @@ span {
   right: 10px;
   display: inline;
 }
-
-#topContacts a {
-  color: #ccffff;;
+#topContacts a,
+#footerContacts a {
+  color: #f5ae23;
   margin: 0 0 0 0;
   display: inline;
 }
@@ -142,7 +191,10 @@ span {
 }
 
 #main {
+}
 
+.main-section {
+  padding-bottom: 2em;
 }
 
 .date-text {
@@ -159,7 +211,6 @@ span {
   color: #999999;
   line-height: 16px;
   float: right;
-
 }
 
 .welcome-message {
@@ -170,16 +221,16 @@ span {
 }
 
 #skillsH3 {
-  color: #F5AE23;
+  color: #f5ae23;
   display: none;
 }
 
 .orange {
-  background-color: #F5AE23;
+  background-color: #f5ae23;
 }
 
 .orange-text {
-  color: #F5AE23;
+  color: #f5ae23;
 }
 
 .white-text {
@@ -302,11 +353,14 @@ span {
   }
 
   #topContactsListLinks {
-    display: inline;
-    float: left;
+    width: 100%;
     clear: left;
     margin: .25em;
 
+  }
+
+  #topContactsListLinks a {
+    margin: 1em;
   }
 }
 
@@ -337,7 +391,6 @@ span {
   }
 
   #topContacts {
-    border: 1px red solid;
     position: static;
     float: left;
     clear: left;
@@ -362,58 +415,3 @@ span {
   }
 }
 
-/* Simply Scroll from logicbox.net */
-/* Container DIV - automatically generated */
-.simply-scroll-container { 
-  position: relative;
-}
-
-/* Clip DIV - automatically generated */
-.simply-scroll-clip { 
-  position: relative;
-  overflow: hidden;
-}
-
-/* UL/OL/DIV - the element that simplyScroll is inited on
-Class name automatically added to element */
-.simply-scroll-list { 
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-  
-.simply-scroll-list li {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-  
-.simply-scroll-list li img {
-  border: none;
-  display: block;
-}
-
-/* Custom class modifications - adds to / overrides above (NOT WORKING!)
-
-.simply-scroll is default base class */
-
-/* Container DIV */
-.simply-scroll { 
-  width: 576px;
-  height: 200px;
-  margin-bottom: 1em;
-}
-
-/* Clip DIV */
-.simply-scroll .simply-scroll-clip {
-  width: 576px;
-  height: 200px;
-}
-  
-/* Explicitly set height/width of each list item */ 
-.simply-scroll .simply-scroll-list li {
-  float: left; /* Horizontal scroll only */
-  width: 290px;
-  height: 200px;
-}

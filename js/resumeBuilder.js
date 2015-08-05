@@ -1,3 +1,31 @@
+/*
+ResumeBuilder.js - Project 2 Nano Degree 
+Authors:  David Dickinson, Cameron Pittman and James Williams
+
+This script works with index.html and helper.js to dynamically 
+insert JSON data into a resume.  
+
+Project 2 requirements for exact data structure and method names have been implemented.  
+
+*/
+
+/*
+bio JSON object and display function with data about me.
+Required structure:
+name : string
+role : string
+contacts : an object with
+      mobile: string
+      email: string 
+      github: string
+      twitter: string 
+      location: string
+welcomeMessage: string 
+skills: array of strings
+biopic: url
+display: function
+*/
+
 var bio = {
 	"name"     : "David J. Dickinson",
 	"role"     : "Developer - Analyst - Artist",
@@ -54,35 +82,53 @@ bio.display = function() {
 	var formattedWelcome = HTMLwelcomeMsg.replace("%data%", bio.welcomeMessage);
 	var formattedLocation = HTMLlocation.replace("%data%", bio.contacts.location);
 
+	var formatedContacts = formattedMoblie + 
+						formattedEmail + 
+						formattedTwitter + 
+						formattedGithub;
+
 	// insert bio elements into the header section
 	$("#topTitle").prepend(formattedName + formattedRole);
 	$("#topHeader").prepend(formattedPic);
 	$("#topContactsList").append(formattedLocation);
-	$("#topContactsListLinks").append(
-		formattedMoblie + 
-		formattedEmail + 
-		formattedTwitter + 
-		formattedGithub);
+	$("#topContactsListLinks").append(formatedContacts);
 
 	// insert the welcome message into the header
 	$("#header").prepend(formattedWelcome);
+	$("#footerContacts").append(formatedContacts)
 };
 
+/*
+work JSON object with data about my work history
+Required structure:
+jobs: array of objects with
+     employer: string 
+     title: string 
+     location: string 
+     dates: string (works with a hyphen between them)
+     description: string 
+display: function
+*/
 var work = {
 	"jobs" : [
 		{
 			"title" : "Freelance Web Developer",
 			"employer" : "Contract",
 			"location": "Scottsdale, AZ",
-			"dates" : "2005 - 2015",
-			"description" :  "Website design, website development, WordPress template customization, site administration. Customized application software and improved application performance for AppointmentJournal.com (PHP/MySQL/UNIX scripting). Developed AppointmentJournal.com marketing website. Developed and maintained client websites."
+			"dates" : "2005 - Present",
+			"description" :  "Website design, website development, WordPress \
+			template customization, site administration. Customized application \
+			software and improved application performance for AppointmentJournal.com \
+			(PHP/MySQL/UNIX scripting). Developed AppointmentJournal.com marketing \
+			website. Developed and maintained client websites."
 		},
 		{
 			"title" : "Consultant",
 			"employer" : "Apelon, Inc.",
 			"location": "Scottsdale, AZ",
 			"dates" : "2004",
-			"description" :  "Developed custom software for the Veteran’s Administration, Enterprise Runtime Terminology System."
+			"description" :  "Developed custom software for the Veteran’s Administration, \
+			Enterprise Runtime Terminology System."
 		},
 		{
 			"title" : "Software Engineer - Team Lead",
@@ -109,6 +155,9 @@ var work = {
 
 };
 
+/* work.display - display work JSON data 
+ * Displays info about me into the Work Experience section.
+ */
 work.display = function () {
 	if (work.jobs.length > 0){
 		
@@ -125,6 +174,90 @@ work.display = function () {
 	}
 };
 
+/*
+projects JSON object with data about some of my recent work in the Nano degree program.
+Requred structure:
+projects: array of objects with 
+      title: string 
+      dates: string (works with a hyphen between them)
+      description: string
+      images: array with string urls
+display: function
+*/
+var projects = {
+	"projects" : [
+		{
+			"title" : "Online Resume",
+			"dates" : "2015",
+			"description" : "An interactive online resume built on HTML/CSS/Javascript and JQuery.  Hint: it's the resume you're looking at right now.",
+			"images" : ["images/resume.jpg", "images/resume2.jpg", "images/resume-map.jpg"],
+ 		},
+		{
+			"title" : "Portfolio",
+			"dates" : "2015",
+			"description" : "Personal project portfolio that was developed during the first portion of the Front End Web Developers Nano-Degree.  You can down load mine from my GitHub: @biscaboy.",
+			"images" : ["images/portfolio.jpg", "images/portfolio2.jpg"]
+		}
+	]
+};
+
+/* projects.display - display projects JSON data 
+ * Displays info about me into the Projects section.
+ */
+projects.display = function (){
+	if (projects.projects.length > 0){
+	
+		for (p in projects.projects){
+			var formattedProjectTitle = HTMLprojectTitle.replace("%data%", projects.projects[p].title);
+			var formattedProjectDates = HTMLprojectDates.replace("%data%", projects.projects[p].dates);
+			var formattedProjectDescription = HTMLprojectDescription.replace("%data%", projects.projects[p].description);
+			
+			$("#projects").append(HTMLprojectStart);
+			$(".project-entry:last").append(formattedProjectTitle + formattedProjectDates + formattedProjectDescription);
+
+			if (projects.projects[p].images.length > 0){
+				for (img in projects.projects[p].images) {
+					var formattedProjectImage = HTMLprojectImage.replace("%data%", projects.projects[p].images[img]);
+					$(".project-entry:last").append(formattedProjectImage);
+				}
+				
+				// on hover do something different with the image
+				$(".project-entry:last").find("img").mouseenter(function (){
+					$( this ).css('width', '30em');
+					$( this ).css('border', '3px solid #ffffd1');
+					$( this ).css('box-shadow','10px 10px 5px #222');
+				});
+				// on hover do something different with the image
+				$(".project-entry:last").find("img").mouseleave(function (){
+					$( this ).css('width', '15em');
+					$( this ).css('border', '2px solid #fff');
+					$( this ).css('box-shadow','10px 10px 5px #666');
+				});
+
+			}
+
+
+		}
+	}
+};
+
+
+/* education JSON object - my school history data.
+Required structure:
+schools: array of objects with
+     name: string
+     location: string
+     degree: string
+     majors: array of strings
+     dates: integer (graduation date)
+     url: string
+onlineCourses: array with
+     title: string
+     school: string
+     date: integer (date finished)
+     url: string
+display: function
+*/
 var education = {
 	"schools" : [
 		{
@@ -150,7 +283,7 @@ var education = {
 			"major" : ["Theatre"],
 			"dates"  : "2006",
 			"url"  : "http://www.scottsdalecc.edu/"			
-		}
+		},
 	],
 	"onlineCourses" : [
 		{
@@ -168,6 +301,9 @@ var education = {
 	]
 };
 
+/* education.display - display school and course JSON data 
+ * Displays info about me into the Education sction of the resume.
+ */
 education.display = function() {
 	if (education.schools.length > 0){
 		
@@ -176,71 +312,47 @@ education.display = function() {
 			var formattedDegree = HTMLschoolDegree.replace("%data%", education.schools[s].degree);
 			var formattedMajor = HTMLschoolMajor.replace("%data%", education.schools[s].major);
 			var formattedDates = HTMLschoolDates.replace("%data%", education.schools[s].dates);
-			var formattedURL = HTMLschoolLocation.replace("%data%", education.schools[s].url);
+			var formattedLocation = HTMLschoolLocation.replace("%data%", education.schools[s].location);
 			var formattedSchool = formattedName +
 								  formattedDegree +
-								  formattedMajor + 
-								  formattedDates +
-								  formattedURL;
+								  formattedLocation +
+								  formattedDates + 
+								  formattedMajor;
 			$("#education").append(HTMLschoolStart);
-			$(".education-entry:last").append(formattedSchool);
+			$(".education-entry:last").append(formattedSchool)
+			// update the url for this school to complete the link.
+			var eduEntry = $(".education-entry:last");
+			eduEntry.find("a").attr("href", education.schools[s].url);
+			// remove the break (<br>) from the major to allow CSS manipulation.
+			eduEntry.find("br").remove();
+			// change the color of the major name inside
+			eduEntry.find("em").toggleClass("orange-text"); 
+			eduEntry.find("em").toggleClass("major");
 		}
 	}
 
 	if (education.onlineCourses.length > 0){
-			var onlineClassesFormattedHTML = HTMLonlineClasses;
-			for (oc in education.onlineCourses) {
-				var formattedTitle = HTMLonlineTitle.replace("%data%", education.onlineCourses[oc].title);
-				var formattedSchool = HTMLonlineSchool.replace("%data%", education.onlineCourses[oc].school);
-				var formattedDates = HTMLonlineDates.replace("%data%", education.onlineCourses[oc].dates);
-				var formattedURL = HTMLonlineURL.replace("%data%", education.onlineCourses[oc].url);
-				var formattedSchool = formattedTitle +
-									  formattedSchool +
-									  formattedDates +
-									  formattedURL;
-				
-				onlineClassesFormattedHTML += formattedSchool;
-			}
-			$(".education-entry:last").append(onlineClassesFormattedHTML);
-		}
-};
-
-var projects = {
-	"project" : [
-		{
-			"title" : "Online Resume",
-			"dates" : "2015",
-			"description" : "An interactive online resume built on HTML/CSS/Javascript and JQuery.  Hint: it's the resume you're looking at right now.",
-			"images" : []
- 		},
-		{
-			"title" : "Portfolio",
-			"dates" : "2015",
-			"description" : "Personal project portfolio that was developed during the first portion of the Front End Web Developers Nano-Degree.  You can down load mine from my GitHub at biscaboy.",
-			"images" : []
-		}
-	]
-};
-
-projects.display = function (){
-	if (projects.project.length > 0){
-	
-		for (p in projects.project){
-			var formattedProjectTitle = HTMLprojectTitle.replace("%data%", projects.project[p].title);
-			var formattedProjectDates = HTMLprojectDates.replace("%data%", projects.project[p].dates);
-			var formattedProjectDescription = HTMLprojectDescription.replace("%data%", projects.project[p].description);
-			
-			$("#projects").append(HTMLprojectStart);
-			$(".project-entry:last").append(formattedProjectTitle + formattedProjectDates + formattedProjectDescription);
-
-			if (projects.project[p].length > 0){
-				for (img in projects.project[p].images) {
-					var formattedProjectImage = HTMLprojectImage.replace("%data%", projects.project[p].images[img]);
-					$(".project-entry:last").append(formattedProjectImage);
-				}
-			}
+		$("#education").append(HTMLonlineClasses);
+		for (oc in education.onlineCourses) {
+			$("#education").append(HTMLonlineClassesStart);
+			var formattedTitle = HTMLonlineTitle.replace("%data%", education.onlineCourses[oc].title);
+			var formattedSchool = HTMLonlineSchool.replace("%data%", education.onlineCourses[oc].school);
+			var formattedDates = HTMLonlineDates.replace("%data%", education.onlineCourses[oc].dates);
+			var formattedURL = HTMLonlineURL.replace("%data%", education.onlineCourses[oc].url);
+			var formattedSchool = formattedTitle +
+								  formattedSchool +
+								  formattedDates;
+			$(".education-entry:last").append(formattedSchool);
+			// insert the url to the anchor href propert to create a live link.
+			var ocEntry = $(".education-entry:last");
+			ocEntry.find("a").attr("href", education.onlineCourses[oc].url);
+			// tag detail information for special css use.
 		}
 	}
+	// tag detail information for special css use.
+	//$(".education-entry").find("date-text").toggleClass("education-entry-details");
+	//$(".education-entry").find("major").toggleClass("education-entry-details");
+
 };
 
 /* display JSON data inserting it into index.html appending a map*/
@@ -249,9 +361,19 @@ function displayJSONwithMap() {
 	work.display();
 	projects.display();
 	education.display();
+	
+	// insert the Google may that was provided by Cameron and James.
 	$("#mapDiv").append(googleMap);
+	
+	// insert a class name so sections can be formatted 
+	$("#main").children("div").toggleClass("main-section");
+	// don't put the "main-section" class name on all divs!
+	$("#header").toggleClass("main-section");
+	// acutally I'm not using this div, so lose it.
+	$("#header").next("div").remove();
 }
 
+// Place this script on the JQuery object and run the whole thing.
 $(displayJSONwithMap());
 
 

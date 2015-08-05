@@ -8,10 +8,18 @@ You won't need to make any changes to it until you start experimenting with
 inserting a Google Map in Problem Set 3.
 
 Cameron Pittman
-*/
 
+============================================================
+************************************************************
+NOTE:  I tried to not touch this file much, but found it easier to read if I changed
+some of the preformatted HTML strings here rather than try to updated them 
+using the DOM later.  I still update the DOM in ResumeBuilder.js, 
+but hopefully it all reads well here.
 
-/*
+David Dickinson
+************************************************************
+============================================================
+
 These are HTML strings. As part of the course, you'll be using JavaScript functions
 replace the %data% placeholder text you see in them.
 */
@@ -45,15 +53,16 @@ var HTMLprojectDescription = '<p><br>%data%</p>';
 var HTMLprojectImage = '<img src="%data%">';
 
 var HTMLschoolStart = '<div class="education-entry"></div>';
-var HTMLschoolName = '<a href="#">%data%';
+var HTMLschoolName = '<div id="school"><a href="#">%data%';
 var HTMLschoolDegree = ' - %data%</a>';
+var HTMLschoolLocation = '<div class="location-text">%data%</div></div>';
 var HTMLschoolDates = '<div class="date-text">%data%</div>';
-var HTMLschoolLocation = '<div class="location-text">%data%</div>';
 var HTMLschoolMajor = '<em><br>Major: %data%</em>';
 
 var HTMLonlineClasses = '<h3>Online Classes</h3>';
-var HTMLonlineTitle = '<a href="#">%data%';
-var HTMLonlineSchool = ' - %data%</a>';
+var HTMLonlineClassesStart = '<div class="education-entry"></div>';
+var HTMLonlineTitle = '<div id="school"><a href="#">%data%';
+var HTMLonlineSchool = ' - %data%</a></div>';
 var HTMLonlineDates = '<div class="date-text">%data%</div>';
 var HTMLonlineURL = '<br><a href="#">%data%</a>';
 
@@ -121,15 +130,63 @@ function initializeMap() {
 
   var locations;
 
+  // Create an array of styles.
+  var styles = [
+    {
+      stylers: [
+        { hue: "#999999" },
+        { saturation: -100 },
+        { weight: 1 }
+      ]
+    },{
+      featureType: "road",
+      elementType: "geometry",
+      stylers: [
+        { lightness: 100 },
+        { visibility: "simplified" }
+      ]
+    },{
+      featureType: "road",
+      elementType: "labels",
+      stylers: [
+        { visibility: "off" }
+      ]
+    },{
+      featureType: "administrative",
+      stylers: [
+        { color : "#f5ae23" },
+      ]
+    },{
+      featureType: "administrative",
+      elementType: "labels.text.stroke",
+      stylers: [
+        { color : "#666666" },
+      ]
+    }
+  ];
+
+  // Create a new StyledMapType object, passing it the array of styles,
+  // as well as the name to be displayed on the map type control.
+  var styledMap = new google.maps.StyledMapType(styles,
+    {name: "Styled Map"});
+
+// Create a map object, and include the MapTypeId to add
+  // to the map type control.
   var mapOptions = {
-    disableDefaultUI: true
+    disableDefaultUI: true,
+    mapTypeControlOptions: {
+      mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+    }
   };
 
   // This next line makes `map` a new Google Map JavaScript Object and attaches it to
   // <div id="map">, which is appended as part of an exercise late in the course.
   map = new google.maps.Map(document.querySelector('#map'), mapOptions);
 
-
+  //Associate the styled map with the MapTypeId and set it to display.
+  map.mapTypes.set('map_style', styledMap);
+  map.setMapTypeId('map_style');
+  
   /*
   locationFinder() returns an array of every location string from the JSONs
   written for bio, education, and work.
@@ -169,15 +226,40 @@ function initializeMap() {
     var lon = placeData.geometry.location.lng();  // longitude from the place service
     var name = placeData.formatted_address;   // name of the place from the place service
     var bounds = window.mapBounds;            // current boundaries of the map window
-
+    var image = 'images/headshot-marker.png';
+    
     // marker is an object with additional data about the pin for a single location
     var marker = new google.maps.Marker({
       map: map,
       position: placeData.geometry.location,
-      title: name
+      title: name,
+      animation: google.maps.Animation.DROP,
+      icon: image
     });
 
-    var contentString = googleMapHeader.replace('%data%', name) + 
+    // query the JSON objects for lables to match the location 
+    var locationTitle = "Where I've lived.";
+    var foundTitle = false;
+    var searchCity = name.split(',');
+    for (var school in education.schools) {
+      var targetCity = education.schools[school].location.split(',');
+      if (searchCity[0] === targetCity[0]) {
+        locationTitle = "Studied at " + education.schools[school].name;
+        foundTitle = true;
+        break;
+      }
+    }
+    if (!foundTitle) {
+      for (var job in work.jobs) {
+        var targetCity = work.jobs[job].location.split(',');
+        if (searchCity[0] === targetCity[0]) {
+          locationTitle = "Worked at " + work.jobs[job].employer;
+        }
+      }
+    }
+
+
+    var contentString = googleMapHeader.replace('%data%', locationTitle) + 
     					googleMapContent.replace('%data%', name);
 
       // infoWindows are the little helper windows that open when you click
