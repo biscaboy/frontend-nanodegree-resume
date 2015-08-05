@@ -220,23 +220,18 @@ projects.display = function (){
 					var formattedProjectImage = HTMLprojectImage.replace("%data%", projects.projects[p].images[img]);
 					$(".project-entry:last").append(formattedProjectImage);
 				}
-				
 				// on hover do something different with the image
 				$(".project-entry:last").find("img").mouseenter(function (){
-					$( this ).css('width', '30em');
-					$( this ).css('border', '3px solid #ffffd1');
-					$( this ).css('box-shadow','10px 10px 5px #222');
+						$( this ).css('width', '100%');
+						$( this ).css('border', '3px solid #ffffd1');
+						$( this ).css('box-shadow','10px 10px 5px #222');
 				});
-				// on hover do something different with the image
 				$(".project-entry:last").find("img").mouseleave(function (){
-					$( this ).css('width', '15em');
-					$( this ).css('border', '2px solid #fff');
-					$( this ).css('box-shadow','10px 10px 5px #666');
+						$( this ).css('width', '12em');
+						$( this ).css('border', '2px solid #fff');
+						$( this ).css('box-shadow','10px 10px 5px #666');
 				});
-
 			}
-
-
 		}
 	}
 };
