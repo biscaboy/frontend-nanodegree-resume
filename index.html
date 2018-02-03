@@ -7,8 +7,17 @@ are arranged. In other words, it describes the layout of a website.
 I can't wait to see the resumes you put together!
 
 Cameron Pittman, Udacity Course Developer
--->
+============================================================
+************************************************************
+NOTE:  I tried to not touch this file much, I did add some 
+css links for the FontAwesome and Google Fonts that I 
+wanted to use in my customization.  Any other changes
+to the structure of this file are done through DOM 
+manipulation.
 
+David Dickinson
+************************************************************
+============================================================
 <!--
 The <head> of a website generally links to important resources the page will
 need to load. You'll see a lot of <link>s to CSS files for styles and
@@ -46,14 +55,17 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
   Uncomment the <script> tag below when you're ready to add an interactive
   Google Map to your resume!
   -->
-  <!-- <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places"></script> -->
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
 
   <meta name="viewport" content="width=device-width">
-</head>
+  
+  <!-- Added font stylesheets from Google and FontAwesome for customized look -->
+  <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed|PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+  <!-- Added fort awesome stylesheet for customization -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+ </head>
 <body unresolved>
   <div id="main">
-    Hello world!   <!-- You'll be deleting this line in the course -->
-
     <!--
     Everything from here to the <script> tag below is the skeleton of your
     website. Your code will add information to each of the sections of the
@@ -127,7 +139,10 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
       document.getElementById('projects').style.display = 'none';
     }
     if(document.getElementsByClassName('education-entry').length === 0) {
-      document.getElementById('education').style.display = 'none';
+      var eduStyle = document.getElementById('education').style;
+      eduStyle.display = 'block';
+      eduStyle.backgroundColor = "#000000";
+
     }
     if(document.getElementsByClassName('flex-item').length === 0) {
       document.getElementById('letsConnect').style.display = 'none';
@@ -135,6 +150,7 @@ need to load. You'll see a lot of <link>s to CSS files for styles and
     if(document.getElementById('map') === null) {
       document.getElementById('mapDiv').style.display = 'none';
     }
+
   </script>
 </body>
 </html>
